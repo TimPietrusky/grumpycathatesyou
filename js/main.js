@@ -457,9 +457,9 @@
     },
 
     click : function() {
-      a = Math.round(Math.random() * (this.data.s.length - 1));
-      b = Math.round(Math.random() * (this.data.m.length - 1));
-      c = Math.round(Math.random() * (this.data.e.length - 1));
+      a = this.generate(this.data.s.length);
+      b = this.generate(this.data.m.length);
+      c = this.generate(this.data.e.length);
 
       vent.trigger('meme:update', { 
         'title' : this.data.s[a] + " " + this.data.m[b] + " " + this.data.e[c] + '!',
@@ -471,7 +471,7 @@
     },
 
     generate : function(value) {
-      return Math.round(Math.random() * (value - 1))
+      return Math.round(Math.random() * value)
     }
   });
 
