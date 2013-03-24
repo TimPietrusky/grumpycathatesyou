@@ -28,6 +28,7 @@
 
     index : function() {
       vent.trigger('router:index', meme.model);
+      message.trigger({ text : 'meow D:', timeout : 750 });
     },
 
     show : function(img, font, title) {
@@ -443,7 +444,7 @@
       if (title != undefined) {
         title = title.replace(/\s/g, '+');
       } 
-      
+
       this.$el.attr('href', 'http://twitter.com/share?url=&text=GrumpyCatHatesYou.com+says:+"'+ title + '"');
     }
   });

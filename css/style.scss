@@ -169,7 +169,7 @@ article[data-high="3"] {
 article[data-high="4"] {
   text-transform:uppercase;
   margin-top:13.37em;
-  border-top:.35em solid $color-gamma;
+  border-top:.25em solid $color-gamma;
 
   > section {
     margin-bottom: 2.5em;
@@ -178,6 +178,10 @@ article[data-high="4"] {
 
     &:first-child {
       border-top:none;
+    }
+
+    @include breakpoint(baby-bear) {
+      padding: 1em;
     }
   }
 }
@@ -223,8 +227,8 @@ article[data-high="4"] {
     transform .25s ease-in-out
   );
 
-  @include breakpoint(mama-bear) {
-    min-height:auto;
+  @include breakpoint(baby-bear) {
+    min-height:50%;
   }
 }
 
