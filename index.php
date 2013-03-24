@@ -19,6 +19,14 @@
   <link rel="shortcut icon" href="/img/grumpycathatesyou.ico" type="image/x-icon">
 </head>
 
+<?php
+  $isLive = false;
+  // Local vs production
+  if (preg_match('!(grumpycathatesyou.com)!', $_SERVER['HTTP_HOST']) == 1) {
+    $isLive = true;
+  }
+?>
+
 <body id="grumpycathatesyou" data-max-width="1024" data-auto-extend="false">
 
   <article data-high="1">
@@ -103,9 +111,14 @@
      <%= text %>
   </script>
   
-  <script src="/js/libs.js"></script>
-  <script src="/js/main.js"></script>
-  <script type="text/javascript">var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-5596313-9']);_gaq.push(['_trackPageview']);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();</script>
+  <?php if ($isLive): ?>
+    <script src="/js/scripts.js"></script>
+    <script type="text/javascript">var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-5596313-9']);_gaq.push(['_trackPageview']);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();</script>
+  <?php else: ?>
+    <script src="/js/libs.js"></script>
+    <script src="/js/main.js"></script>
+  <?php endif; ?>
+  
   <!--[if (gte IE 6)&(lte IE 8)]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->   
