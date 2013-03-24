@@ -433,7 +433,7 @@
     el : '[data-type="2"]',
 
     initialize : function() {
-      vent.bind('meme:update', this.update, this);
+      vent.bind('meme:save', this.update, this);
       vent.bind('router:index', this.update, this);
     },
 
