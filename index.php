@@ -27,7 +27,7 @@
   }
 ?>
 
-<body id="grumpycathatesyou" data-max-width="1024" data-auto-extend="false">
+<body id="grumpycathatesyou" data-max-width="1024" data-auto-extend="true">
 
   <article data-high="1">
     <section data-cols="1">
