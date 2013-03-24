@@ -235,21 +235,23 @@
     el : '.editor',
     template : template('template_editor'),
 
+    data : {
+      pictureCollection : null,
+      fontCollection : null
+    },
+
+    childs : {
+      titleEditor : null,
+      pictureEditor : null,
+      fontEditor : null
+    },
+
     initialize : function() {
       vent.bind('edit:click', this.start, this);
       vent.bind('save:click', this.stop, this);
-    },
+      vent.bind('editor:update', this.render, this);
 
-    // Start editing the meme
-    start : function() {
-      this.$el.html(this.template);
-
-      // Create the TitleEditor and add it to the editor
-      var titleEditor = new App.Views.TitleEditor();
-      this.$el.find('.editor--title').append(titleEditor.render().el);
-
-      // Create the PictureEditor and add it to the Editor
-      var pictureCollection = new App.Collections.PictureEditor([
+      this.data.pictureCollection = new App.Collections.PictureEditor([
         {'img' : 1},
         {'img' : 2},
         {'img' : 3},
@@ -257,21 +259,20 @@
         {'img' : 5},
         {'img' : 6},
       ]);
-      var pictureEditor = new App.Views.PictureEditor({ collection : pictureCollection });
-      this.$el.find('.editor--picture').append(pictureEditor.render().el);
 
-      // Create the FontEditor and add it to the Editor
-      var fontCollection = new App.Collections.FontEditor([
+      this.data.fontCollection = new App.Collections.FontEditor([
         {'font' : 1, 'text' : 'Nosifer'},
         {'font' : 2, 'text' : 'Alfa Slab One'},
         {'font' : 3, 'text' : 'Peralta'},
         {'font' : 4, 'text' : 'Princess Sofia'},
         {'font' : 5, 'text' : 'Josefin Sans'},
       ]);
-      var fontEditor = new App.Views.FontEditor({ collection : fontCollection });
-      this.$el.find('.editor--font').append(fontEditor.render().el);
+    },
 
+    // Start editing the meme
+    start : function() {
       this.$el.addClass('active');
+      this.render();
     },
 
     // Remove editor and save
@@ -281,9 +282,30 @@
       setTimeout(_.bind(function() {
         this.$el.html('');
       }, this), 250); 
+    },
+
+    render : function() {
+      if (this.$el.hasClass('active')) {
+        this.$el.html(this.template);
+
+        // Create the TitleEditor and add it to the editor
+        this.childs.titleEditor = new App.Views.TitleEditor();
+        this.$el.find('.editor--title').append(this.childs.titleEditor.render().el);
+
+        // Create the PictureEditor and add it to the Editor
+        this.childs.pictureEditor = new App.Views.PictureEditor({ collection : this.data.pictureCollection });
+        this.$el.find('.editor--picture').append(this.childs.pictureEditor.render().el);
+
+        // Create the FontEditor and add it to the Editor
+        this.childs.fontEditor = new App.Views.FontEditor({ collection : this.data.fontCollection });
+        this.$el.find('.editor--font').append(this.childs.fontEditor.render().el);
+      }
     }
   });
 
+  /*
+   * TitleEditor to edit the title.
+   */
   App.Views.TitleEditor = Backbone.View.extend({
     tagName : 'textarea',
 
@@ -415,6 +437,45 @@
   });
 
   /*
+   * Create a random meme.
+   */
+  App.Views.Random = Backbone.View.extend({
+    el : '.random',
+
+    events : {
+      'click' : 'click'
+    },
+
+    initialize : function() {
+      vent.bind('random:click', this.click, this);
+    },
+
+    data : {
+      s : ["KILL", "DESTROY", "MESS UP", "EXPLODE", "RIP", "MURDER", "TEAR UP", "FUCK", "TERRORIZE", "DOMINATE", "GOOGLE", "ANGER", "SCREAM", "ANNOY", "IMPLODE", "PURCHASE", "ENRAGE", "LIKE", "BEFRIEND", "A'SPLODE", "BAN", "BOMB", "LAUNCH", "SHATTER", "TROLL", "RUN", "KICK", "PUNCH", "PUSH", "DIE", "DO", "BURST", "BURN", "DESPISE", "DESPITE", "AS SEEN ON"],
+      m : ["LETHAL", "DEADLY", "BOMBASTIC", "SILLY", "FUCKING", "FAT", "COLOSSAL", "GIGANTUAL", "ANNOYING", "FRESH", "UGLY", "EXPLOSIVE", "ORIGINAL", "ACTION-PACKED", "BLOCKBUSTER", "FAKE", "TERRIBLE TERRIBLE", "SPEEDY", "CAT-LIKE", "AMERICAN", "GROOVY", "SHITTY", "HAZARDOUS", "DESPICABLE", "EXCESSIVE", "NUCLEAR", "MAGICKA", "PARADOXAL", "STUPID", "PRACTICAL", "BOHEMIC"],
+      e : ["HEROES", "EXPLOSIONS", "DESTRUCTION", "ACTION", "EVERYONE", "ASSHOLES", "GORE", "BLOOD", "YOU", "PIZZA", "DONUTS", "SOFT-DRINKS", "WEAPONRY", "KITTENS", "SHITTYFOX", "GAME PUBLISHERS", "APPLE FANBOYS", "TIME TRAVELERS", "TRAIN CONDUCTORS", "TRAIN SIMULATORS", "EVERYTHING", "PEOPLE", "GRENADES", "BOMBS", "BANNED SUBSTANCES", "NINJAS", "ALL HUMANS", "LEG WARMERS", "INTERNET EXPLORER", "DUBSTEP", "MOVIES", "BOOKS", "TV", "MOVIES", "GAME DEVELOPERS"]    
+    },
+
+    click : function() {
+      a = Math.round(Math.random() * (this.data.s.length - 1));
+      b = Math.round(Math.random() * (this.data.m.length - 1));
+      c = Math.round(Math.random() * (this.data.e.length - 1));
+
+      vent.trigger('meme:update', { 
+        'title' : this.data.s[a] + " " + this.data.m[b] + " " + this.data.e[c] + '!',
+        'img' : this.generate(Editor.data.pictureCollection.length),
+        'font' : this.generate(Editor.data.fontCollection.length)
+      });
+
+      vent.trigger('editor:update');
+    },
+
+    generate : function(value) {
+      return Math.round(Math.random() * (value - 1))
+    }
+  });
+
+  /*
    * Do some stuff with the search button
    */
   App.Views.Share = Backbone.View.extend({
@@ -486,6 +547,9 @@
   // Edit button
   new App.Views.Edit();
 
+  // Random button
+  var random = new App.Views.Random();
+
   // Tweet button
   var tweet = new App.Views.Tweet();
 
@@ -493,7 +557,7 @@
   var share = new App.Views.Share();
 
   // Editor
-  new App.Views.Editor();
+  var Editor = new App.Views.Editor();
 
   // Router
   new App.Router();

@@ -45,8 +45,16 @@
   <article data-high="2">
     <section data-cols="2">
       <div>
-        <button class="edit">Edit</button>
+        <section data-cols="2">
+          <div>
+            <button class="edit">Edit</button>
+          </div>
+          <div>
+            <button class="random">Random</button>
+          </div>
+        </section>
       </div>
+      
       <div>
         <section data-cols="2">
         <div>
