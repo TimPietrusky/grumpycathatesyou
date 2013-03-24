@@ -4,4 +4,4 @@ Create your own Grumpy Cat meme or die trying. I'm not kidding, asshole!
 
 [grumpycathatesyou.com](http://grumpycathatesyou.com)
 
-![grumpycathatesyou preview](https://raw.github.com/TimPietrusky/grumpycathatesyou/master/img/grumpycathatesyou_preview.png)
+![grumpycathatesyou preview](https://raw.github.com/TimPietrusky/grumpycathatesyou/master/img/grumpycathatesyou_preview_1.png)
